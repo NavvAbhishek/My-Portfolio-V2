@@ -47,14 +47,18 @@ export default function AboutSection() {
   };
 
   const infoCards = [
-    { icon: MapPin, label: "Location", value: "Your City, Country" },
+    { icon: MapPin, label: "Location", value: "Colombo, Sri Lanka" },
     { icon: Calendar, label: "Experience", value: "2+ Years Coding" },
     {
       icon: GraduationCap,
       label: "Education",
-      value: "B.Tech in Software Eng.",
+      value: "B.Sc in Software Engineering",
     },
-    { icon: Sparkles, label: "Focus", value: "Full-Stack Development" },
+    {
+      icon: Sparkles,
+      label: "Focus",
+      value: "Full-Stack Developmen with AI/ML",
+    },
   ];
 
   return (
@@ -90,15 +94,15 @@ export default function AboutSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="mb-20"
+          className="mb-2"
         >
           <span className="font-mono text-amber text-sm tracking-wider">
             01 // ABOUT ME
           </span>
           <h2 className="font-clash text-4xl md:text-6xl font-bold mt-4 text-accent-cream">
-            Crafting Digital
+            Crafting Interfaces With
             <br />
-            <span className="text-gradient">Experiences</span>
+            <span className="text-gradient">Purpose</span>
           </h2>
         </motion.div>
 
@@ -122,11 +126,11 @@ export default function AboutSection() {
               {/* Placeholder text */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="w-32 h-32 mx-auto mb-4 rounded-full border-2 border-dashed border-amber/30 flex items-center justify-center">
+                  {/* <div className="w-32 h-32 mx-auto mb-4 rounded-full border-2 border-dashed border-amber/30 flex items-center justify-center">
                     <span className="text-4xl">👨‍💻</span>
-                  </div>
+                  </div> */}
                   <p className="font-mono text-sm text-amber/60">
-                    Your Image Here
+                     <img src="/gem.png" /> 
                   </p>
                 </div>
               </div>
@@ -194,7 +198,7 @@ export default function AboutSection() {
               <p className="font-outfit text-xl text-accent-cream leading-relaxed">
                 Hey there! I'm{" "}
                 <span className="text-amber font-semibold">Abhishek</span>, a
-                passionate software engineering student who loves Turning ideas
+                passionate software engineering student who loves turning ideas
                 into clean and modern solutions.
               </p>
               <p className="font-outfit text-lg text-accent-cream/70 leading-relaxed">
@@ -203,15 +207,13 @@ export default function AboutSection() {
                 I work with MERN stack, Next.js, and Spring Boot to build
                 scalable and efficient solutions. I'm always eager to learn and
                 grow, constantly exploring new technologies and better ways to
-                solve problems. I enjoy the challenge of building things that
-                matter. With a mindset of "If I don't know something, I'll
-                figure it out," I approach every project with confidence,
-                curiosity, and the determination to get things done.
+                solve problems.
               </p>
               <p className="font-outfit text-lg text-accent-cream/70 leading-relaxed">
-                When I'm not coding, you'll find me exploring new technologies,
-                contributing to open-source projects, or sharing knowledge with
-                the developer community.
+                I enjoy the challenge of building things that matter. With a
+                mindset of "If I don't know something, I'll figure it out," I
+                approach every project with confidence, curiosity, and the
+                determination to get things done.
               </p>
             </motion.div>
 
