@@ -59,10 +59,152 @@ const contactInfo = [
   { icon: Phone, label: 'Phone', value: '+(94)71-1604788' },
 ]
 
+// Input field component - Moved outside to prevent re-creation on every render
+interface InputFieldProps {
+  name: string
+  label: string
+  type?: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onFocus: () => void
+  onBlur: () => void
+  isFocused: boolean
+  isInView: boolean
+}
+
+const InputField = ({
+  name,
+  label,
+  type = 'text',
+  value,
+  onChange,
+  onFocus,
+  onBlur,
+  isFocused,
+  isInView
+}: InputFieldProps) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={isInView ? { opacity: 1, y: 0 } : {}}
+    transition={{ duration: 0.5 }}
+    className="relative"
+  >
+    <input
+      type={type}
+      name={name}
+      id={name}
+      value={value}
+      onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      required
+      className={`
+        peer w-full px-5 py-4 rounded-2xl
+        bg-navy/30 border-2 transition-all duration-300
+        font-outfit text-accent-cream placeholder-transparent
+        focus:outline-none
+        ${isFocused || value
+          ? 'border-amber/50 shadow-glow-amber'
+          : 'border-accent-cream/10 hover:border-accent-cream/20'
+        }
+      `}
+      placeholder={label}
+    />
+    <label
+      htmlFor={name}
+      className={`
+        absolute left-5 transition-all duration-300 pointer-events-none font-outfit
+        ${isFocused || value
+          ? '-top-2.5 text-xs text-amber bg-black px-2'
+          : 'top-4 text-accent-cream/50'
+        }
+      `}
+    >
+      {label}
+    </label>
+
+    {/* Focus glow effect */}
+    <AnimatePresence>
+      {isFocused && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          className="absolute inset-0 rounded-2xl bg-amber/5 -z-10"
+        />
+      )}
+    </AnimatePresence>
+  </motion.div>
+)
+
+// Textarea field component - Moved outside to prevent re-creation on every render
+interface TextAreaFieldProps {
+  name: string
+  label: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  onFocus: () => void
+  onBlur: () => void
+  isFocused: boolean
+  isInView: boolean
+}
+
+const TextAreaField = ({
+  name,
+  label,
+  value,
+  onChange,
+  onFocus,
+  onBlur,
+  isFocused,
+  isInView
+}: TextAreaFieldProps) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={isInView ? { opacity: 1, y: 0 } : {}}
+    transition={{ duration: 0.5, delay: 0.2 }}
+    className="relative"
+  >
+    <textarea
+      name={name}
+      id={name}
+      rows={5}
+      value={value}
+      onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      required
+      className={`
+        peer w-full px-5 py-4 rounded-2xl resize-none
+        bg-navy/30 border-2 transition-all duration-300
+        font-outfit text-accent-cream placeholder-transparent
+        focus:outline-none
+        ${isFocused || value
+          ? 'border-amber/50 shadow-glow-amber'
+          : 'border-accent-cream/10 hover:border-accent-cream/20'
+        }
+      `}
+      placeholder={label}
+    />
+    <label
+      htmlFor={name}
+      className={`
+        absolute left-5 transition-all duration-300 pointer-events-none font-outfit
+        ${isFocused || value
+          ? '-top-2.5 text-xs text-amber bg-black px-2'
+          : 'top-4 text-accent-cream/50'
+        }
+      `}
+    >
+      {label}
+    </label>
+  </motion.div>
+)
+
 export default function ContactSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
-  
+
   // Form state
   const [formData, setFormData] = useState({
     name: '',
@@ -84,83 +226,48 @@ export default function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // Simulate form submission (replace with actual API call)
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    
-    // Reset after showing success
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({ name: '', email: '', subject: '', message: '' })
-    }, 3000)
-  }
 
-  // Input field component
-  const InputField = ({ 
-    name, 
-    label, 
-    type = 'text',
-  }: { 
-    name: string
-    label: string
-    type?: string
-  }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5 }}
-      className="relative"
-    >
-      <input
-        type={type}
-        name={name}
-        id={name}
-        value={formData[name as keyof typeof formData]}
-        onChange={handleChange}
-        onFocus={() => setFocusedField(name)}
-        onBlur={() => setFocusedField(null)}
-        required
-        className={`
-          peer w-full px-5 py-4 rounded-2xl
-          bg-navy/30 border-2 transition-all duration-300
-          font-outfit text-accent-cream placeholder-transparent
-          focus:outline-none
-          ${focusedField === name || formData[name as keyof typeof formData] 
-            ? 'border-amber/50 shadow-glow-amber' 
-            : 'border-accent-cream/10 hover:border-accent-cream/20'
-          }
-        `}
-        placeholder={label}
-      />
-      <label
-        htmlFor={name}
-        className={`
-          absolute left-5 transition-all duration-300 pointer-events-none font-outfit
-          ${focusedField === name || formData[name as keyof typeof formData]
-            ? '-top-2.5 text-xs text-amber bg-black px-2'
-            : 'top-4 text-accent-cream/50'
-          }
-        `}
-      >
-        {label}
-      </label>
-      
-      {/* Focus glow effect */}
-      <AnimatePresence>
-        {focusedField === name && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="absolute inset-0 rounded-2xl bg-amber/5 -z-10"
-          />
-        )}
-      </AnimatePresence>
-    </motion.div>
-  )
+    try {
+      // Send form data to Web3Forms
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: 'bf3d236f-6c81-407a-838d-1388f4f5dd3d',
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          from_name: formData.name,
+          replyto: formData.email,
+        }),
+      })
+
+      const result = await response.json()
+
+      setIsSubmitting(false)
+
+      if (result.success) {
+        setIsSubmitted(true)
+
+        // Reset after showing success
+        setTimeout(() => {
+          setIsSubmitted(false)
+          setFormData({ name: '', email: '', subject: '', message: '' })
+        }, 3000)
+      } else {
+        // Handle error
+        console.error('Form submission failed:', result)
+        alert('Failed to send message. Please try again.')
+      }
+    } catch (error) {
+      setIsSubmitting(false)
+      console.error('Error submitting form:', error)
+      alert('An error occurred. Please try again later.')
+    }
+  }
 
   return (
     <section
@@ -291,54 +398,52 @@ export default function ContactSection() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name and Email row */}
               <div className="grid md:grid-cols-2 gap-6">
-                <InputField name="name" label="Your Name" />
-                <InputField name="email" label="Your Email" type="email" />
+                <InputField
+                  name="name"
+                  label="Your Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  onFocus={() => setFocusedField('name')}
+                  onBlur={() => setFocusedField(null)}
+                  isFocused={focusedField === 'name'}
+                  isInView={isInView}
+                />
+                <InputField
+                  name="email"
+                  label="Your Email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  onFocus={() => setFocusedField('email')}
+                  onBlur={() => setFocusedField(null)}
+                  isFocused={focusedField === 'email'}
+                  isInView={isInView}
+                />
               </div>
 
               {/* Subject */}
-              <InputField name="subject" label="Subject" />
+              <InputField
+                name="subject"
+                label="Subject"
+                value={formData.subject}
+                onChange={handleChange}
+                onFocus={() => setFocusedField('subject')}
+                onBlur={() => setFocusedField(null)}
+                isFocused={focusedField === 'subject'}
+                isInView={isInView}
+              />
 
               {/* Message */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="relative"
-              >
-                <textarea
-                  name="message"
-                  id="message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={handleChange}
-                  onFocus={() => setFocusedField('message')}
-                  onBlur={() => setFocusedField(null)}
-                  required
-                  className={`
-                    peer w-full px-5 py-4 rounded-2xl resize-none
-                    bg-navy/30 border-2 transition-all duration-300
-                    font-outfit text-accent-cream placeholder-transparent
-                    focus:outline-none
-                    ${focusedField === 'message' || formData.message 
-                      ? 'border-amber/50 shadow-glow-amber' 
-                      : 'border-accent-cream/10 hover:border-accent-cream/20'
-                    }
-                  `}
-                  placeholder="Your Message"
-                />
-                <label
-                  htmlFor="message"
-                  className={`
-                    absolute left-5 transition-all duration-300 pointer-events-none font-outfit
-                    ${focusedField === 'message' || formData.message
-                      ? '-top-2.5 text-xs text-amber bg-black px-2'
-                      : 'top-4 text-accent-cream/50'
-                    }
-                  `}
-                >
-                  Your Message
-                </label>
-              </motion.div>
+              <TextAreaField
+                name="message"
+                label="Your Message"
+                value={formData.message}
+                onChange={handleChange}
+                onFocus={() => setFocusedField('message')}
+                onBlur={() => setFocusedField(null)}
+                isFocused={focusedField === 'message'}
+                isInView={isInView}
+              />
 
               {/* Submit button */}
               <motion.button
