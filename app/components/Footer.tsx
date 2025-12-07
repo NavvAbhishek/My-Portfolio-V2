@@ -1,18 +1,16 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import { Heart, ArrowUp } from 'lucide-react'
+import { motion } from "framer-motion";
+import { Heart, ArrowUp } from "lucide-react";
+import Image from "next/image";
 
-/**
- * Footer - Minimal footer with back to top button
- */
 export default function Footer() {
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <footer className="relative py-12 border-t border-accent-cream/5">
+    <footer className="relative py-6 border-t border-accent-cream/5">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/50 to-transparent" />
 
@@ -25,8 +23,11 @@ export default function Footer() {
             viewport={{ once: true }}
             className="text-center md:text-left"
           >
-            <a href="#home" className="font-clash text-2xl font-bold text-gradient">
-              A<span className="text-amber">.</span>
+            <a
+              href="#home"
+              className="font-clash text-2xl font-bold text-gradient"
+            >
+              NA<span className="text-amber">.</span>
             </a>
             <p className="mt-2 font-outfit text-sm text-accent-cream/40">
               © {new Date().getFullYear()} Abhishek. All rights reserved.
@@ -39,7 +40,7 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="flex items-center gap-2 font-outfit text-sm text-accent-cream/40"
+            className="flex items-center gap-2 font-outfit text-md text-accent-cream/40"
           >
             <span>Crafted with</span>
             <motion.div
@@ -48,7 +49,16 @@ export default function Footer() {
             >
               <Heart className="w-4 h-4 text-amber fill-amber" />
             </motion.div>
-            <span>and lots of ☕</span>
+            <span className="flex items-center gap-1.5">
+              and lots of
+              <Image
+                src="/coffee-cup2.png"
+                width={25}
+                height={25}
+                alt="coffee cup"
+                className="inline-block"
+              />
+            </span>
           </motion.div>
 
           {/* Back to top button */}
@@ -73,5 +83,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
