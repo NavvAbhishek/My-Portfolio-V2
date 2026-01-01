@@ -57,7 +57,7 @@ export default function AboutSection() {
     {
       icon: Sparkles,
       label: "Focus",
-      value: "Full-Stack Developmen with AI/ML",
+      value: "Full-Stack Development with AI/ML",
     },
   ];
 

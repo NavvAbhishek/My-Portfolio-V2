@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowDown, Github, Linkedin, Twitter, Code2 } from "lucide-react";
+import { ArrowDown, Github, Linkedin, Twitter, Code2, FileText } from "lucide-react";
 
 /**
  * HeroSection - Landing section with animated name reveal and parallax
@@ -158,7 +158,7 @@ export default function HeroSection() {
           className="relative mb-8"
         >
           <h2 className="font-outfit text-xl md:text-3xl font-light text-accent-cream/80">
-            <span className="text-amber">Full Stack</span> Developer
+            <span className="text-amber">Full Stack</span> Developer with  <span className="text-amber">AI/ML</span>
           </h2>
           {/* Decorative line */}
           <motion.div
@@ -202,18 +202,15 @@ export default function HeroSection() {
 
           {/* Secondary CTA */}
           <motion.a
-            href="#contact"
+            href="/Navindu Abhishek CV.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="group inline-flex items-center gap-3 px-8 py-4 border-2 border-amber/30 text-amber font-outfit font-semibold rounded-full transition-all duration-300 hover:border-amber hover:bg-amber/10"
           >
-            <span>Get In Touch</span>
-            <motion.span
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              →
-            </motion.span>
+            <FileText className="w-5 h-5" />
+            <span>View My CV</span>
           </motion.a>
         </motion.div>
 
